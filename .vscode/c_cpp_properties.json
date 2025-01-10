@@ -1,0 +1,13 @@
+{
+    "configurations": [
+        {
+            "name": "main",
+            "compilerPath": "C:/Users/Straylight/.ufbt/toolchain/x86_64-windows/bin/arm-none-eabi-gcc.EXE",
+            "intelliSenseMode": "gcc-arm",
+            "compileCommands": "${workspaceFolder}/.vscode/compile_commands.json",
+            "cStandard": "gnu23",
+            "cppStandard": "c++20"
+        }
+    ],
+    "version": 4
+}
