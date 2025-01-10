@@ -11,7 +11,7 @@ App(
     fap_version="0.1",
     fap_icon="resistors.png",
     fap_description="Resistor calculations",
-    fap_author="Lewis Westbury",
-    fap_weburl="https://github.com/instantiator/flipper-zero-experimental-apps/tree/main/resistors",
+    fap_author="Lewis Westbury, Patrick Edwards",
+    fap_weburl="https://github.com/shalebridge/flipper-resistance-calculator",
     fap_icon_assets="images",
 )
