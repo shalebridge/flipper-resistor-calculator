@@ -65,8 +65,9 @@ bool is_tolerance_colour(BandColour colour) {
 }
 
 bool is_temp_coeff_colour(BandColour colour) {
-    return colour == BandBrown || colour == BandRed || colour == BandOrange ||
-           colour == BandYellow || colour == BandBlue || colour == BandPurple;
+    return colour == BandBlack || colour == BandBrown || colour == BandRed ||
+           colour == BandOrange || colour == BandYellow || colour == BandGreen ||
+           colour == BandBlue || colour == BandPurple || colour == BandGray;
 }
 
 BandColour
@@ -160,8 +161,6 @@ void calculate_resistance_decimal(ResistorType rtype, BandColour colour) {
 }
 
 char* decode_resistance_multiplier(ResistorType rtype, BandColour colour) {
-    calculate_resistance_decimal(rtype, colour);
-
     static char unit[] = " ohm";
 
     switch(colour) {
@@ -208,6 +207,7 @@ char* decode_resistance_multiplier(ResistorType rtype, BandColour colour) {
 
 void update_resistance_multiplier(ResistorType rtype, BandColour colours[], char string[]) {
     int multiplier_index = MULTIPLIER_INDEX_PER_RESISTOR[rtype - 1];
+    calculate_resistance_decimal(rtype, colours[multiplier_index]);
     char* unit = decode_resistance_multiplier(rtype, colours[multiplier_index]);
     char* target = string + INDEX_MULTIPLIER;
     strncpy(target, unit, CHARS_MULTIPLIER);
@@ -256,18 +256,24 @@ void update_resistance_tolerance(ResistorType rtype, BandColour colours[], char 
 
 char* decode_resistance_temp_coeff(BandColour colour) {
     switch(colour) {
-    case BandBrown:;
+    case BandBlack:
+        return "250";
+    case BandBrown:
         return "100";
-    case BandRed:;
+    case BandRed:
         return "50";
-    case BandOrange:;
+    case BandOrange:
         return "15";
-    case BandYellow:;
+    case BandYellow:
         return "25";
-    case BandBlue:;
+    case BandGreen:
+        return "20";
+    case BandBlue:
         return "10";
-    case BandPurple:;
+    case BandPurple:
         return "5";
+    case BandGray:
+        return "1";
     default:;
         return "--";
     }

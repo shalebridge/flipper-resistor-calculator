@@ -161,4 +161,3 @@ void resistors_edit_scene_on_exit(void* context) {
     App* app = context;
     widget_reset(app->widget);
 }
-////
