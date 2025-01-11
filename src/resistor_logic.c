@@ -9,7 +9,7 @@ const uint8_t CHARS_TOLERANCE = 7;
 const uint8_t CHARS_TEMP_COEFF = 3;
 const uint8_t CHARS_CALCULATION = 12;
 
-const char BLANK_CALCULATION[] = "           "; // "nnn x 10^nn"
+const char BLANK_CALCULATION[] = "        "; // "nnn Xohm"
 const char BLANK_TOLERANCE[] = "       ";
 const char BLANK_TEMP_COEFF[] = "   ";
 
@@ -21,8 +21,6 @@ const int NUMERIC_BANDS_PER_RESISTOR[6] = {-1, -1, 2, 2, 3, 3};
 const int MULTIPLIER_INDEX_PER_RESISTOR[6] = {-1, -1, 2, 2, 3, 3};
 const int TOLERANCE_INDEX_PER_RESISTOR[6] = {-1, -1, -1, 3, 4, 4};
 const int TEMP_COEFF_INDEX_PER_RESISTOR[6] = {-1, -1, -1, -1, -1, 5};
-
-double resistor_multiplier = 0.0;
 
 bool has_tolerance(ResistorType rtype) {
     return TOLERANCE_INDEX_PER_RESISTOR[rtype - 1] > -1;
@@ -89,8 +87,35 @@ BandColour alter_resistor_band(
     return colour;
 }
 
-int decode_resistance_number(ResistorType rtype, BandColour colours[]) {
+double calculate_resistance_decimal(ResistorType rtype, BandColour colour) {
+    switch(colour) {
+    case BandBlue:
+    case BandOrange:
+    case BandBlack:
+    case BandWhite:
+        return 1;
+    case BandBrown:
+    case BandYellow:
+    case BandPurple:
+        return (rtype == R5 || rtype == R6) ? 0.01 : 10;
+    case BandGray:
+    case BandGreen:
+    case BandRed:
+    case BandGold:
+        return 0.1;
+    case BandSilver:
+        return 0.01;
+    case BandPink:
+        return 0.001;
+    default:
+        return 0;
+    }
+}
+
+double decode_resistance_number(ResistorType rtype, BandColour colours[]) {
     uint8_t bands = NUMERIC_BANDS_PER_RESISTOR[rtype - 1];
+    uint8_t multiplier_index = MULTIPLIER_INDEX_PER_RESISTOR[rtype - 1];
+    double decimal = calculate_resistance_decimal(rtype, colours[multiplier_index]);
     int value = 0;
     for(uint_fast8_t b = 0; b < bands; b++) {
         int pwr = bands - b - 1;
@@ -98,69 +123,35 @@ int decode_resistance_number(ResistorType rtype, BandColour colours[]) {
         value += delta;
     }
 
-    return value;
+    return value * decimal;
 }
 
 char* calculate_decimal_places(double value) {
     static char formatter[] = "%. f";
     char buffer[16];
-    snprintf(buffer, sizeof(buffer), "%.6g", value);
-    const char* decimalPoint = strchr(buffer, '.');
+    snprintf(buffer, sizeof(buffer), "%.6f", value);
+    const char* dec = strchr(buffer, '.');
 
-    if(decimalPoint == NULL) return 0;
+    if(dec == NULL) return 0;
 
     // Count the characters after the decimal point
     const char* end = buffer + strlen(buffer);
-    while(end > decimalPoint && *(end - 1) == '0') // Skip trailing zeros
+    while(end > dec && *(end - 1) == '0') // Skip trailing zeros
         end--;
 
-    formatter[2] = (uint8_t)(end - decimalPoint - 1) + '0';
+    formatter[2] = (uint8_t)(end - dec - 1) + '0';
     return formatter;
 }
 
 void update_resistance_number(ResistorType rtype, BandColour colours[], char string[]) {
     double value = decode_resistance_number(rtype, colours);
-    value *= resistor_multiplier;
     char* formatter = calculate_decimal_places(value);
     uint8_t length = snprintf(NULL, 0, formatter, value);
     char* str = malloc(length + 1);
     snprintf(str, length + 1, formatter, value);
-
     char* target = string + INDEX_NUMERIC;
     strncpy(target, str, length);
     free(str);
-}
-
-void calculate_resistance_decimal(ResistorType rtype, BandColour colour) {
-    switch(colour) {
-    case BandBlue:
-    case BandOrange:
-    case BandBlack:
-    case BandWhite:
-        resistor_multiplier = 1;
-        break;
-    case BandBrown:
-    case BandYellow:
-    case BandPurple:
-        if(rtype == R5 || rtype == R6) {
-            resistor_multiplier = 0.01;
-            break;
-        }
-        resistor_multiplier = 10;
-        break;
-    case BandGray:
-    case BandGreen:
-    case BandRed:
-    case BandGold:
-        resistor_multiplier = 0.1;
-        break;
-    case BandSilver:
-        resistor_multiplier = 0.01;
-        break;
-    case BandPink: // very small values!
-        resistor_multiplier = 0.001;
-        break;
-    }
 }
 
 char* decode_resistance_multiplier(ResistorType rtype, BandColour colour) {
@@ -210,7 +201,6 @@ char* decode_resistance_multiplier(ResistorType rtype, BandColour colour) {
 
 void update_resistance_multiplier(ResistorType rtype, BandColour colours[], char string[]) {
     uint8_t multiplier_index = MULTIPLIER_INDEX_PER_RESISTOR[rtype - 1];
-    calculate_resistance_decimal(rtype, colours[multiplier_index]);
     char* unit = decode_resistance_multiplier(rtype, colours[multiplier_index]);
     char* target = string + INDEX_MULTIPLIER;
     strncpy(target, unit, CHARS_MULTIPLIER);
