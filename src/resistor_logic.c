@@ -87,7 +87,7 @@ BandColour alter_resistor_band(
     return colour;
 }
 
-double calculate_resistance_decimal(ResistorType rtype, BandColour colour) {
+double get_resistance_decimal(ResistorType rtype, BandColour colour) {
     switch(colour) {
     case BandBlue:
     case BandOrange:
@@ -115,7 +115,7 @@ double calculate_resistance_decimal(ResistorType rtype, BandColour colour) {
 double decode_resistance_number(ResistorType rtype, BandColour colours[]) {
     uint8_t bands = NUMERIC_BANDS_PER_RESISTOR[rtype - 1];
     uint8_t multiplier_index = MULTIPLIER_INDEX_PER_RESISTOR[rtype - 1];
-    double decimal = calculate_resistance_decimal(rtype, colours[multiplier_index]);
+    double decimal = get_resistance_decimal(rtype, colours[multiplier_index]);
     int value = 0;
     for(uint_fast8_t b = 0; b < bands; b++) {
         int pwr = bands - b - 1;
