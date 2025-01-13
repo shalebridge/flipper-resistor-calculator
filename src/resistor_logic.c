@@ -127,12 +127,12 @@ double decode_resistance_number(ResistorType rtype, BandColour colours[]) {
 }
 
 char* calculate_decimal_places(double value) {
-    static char formatter[] = "%. f";
+    static char formatter[] = "%.0f";
     char buffer[16];
     snprintf(buffer, sizeof(buffer), "%.6g", value);
     const char* dec = strchr(buffer, '.');
 
-    if(dec == NULL) return 0;
+    if(dec == NULL || value == 0) return formatter;
 
     // Count the characters after the decimal point
     const char* end = buffer + strlen(buffer);
