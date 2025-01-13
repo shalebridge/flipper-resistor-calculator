@@ -129,7 +129,7 @@ double decode_resistance_number(ResistorType rtype, BandColour colours[]) {
 char* calculate_decimal_places(double value) {
     static char formatter[] = "%. f";
     char buffer[16];
-    snprintf(buffer, sizeof(buffer), "%.6f", value);
+    snprintf(buffer, sizeof(buffer), "%.6g", value);
     const char* dec = strchr(buffer, '.');
 
     if(dec == NULL) return 0;
