@@ -13,9 +13,10 @@ A simple app to calculate resistance from the coloured bands, based on original 
 
 This app requires the official `release` firmware (tested against version `1.1.2`).
 
-## Build
-
 [![Compatibility status:](https://github.com/shalebridge/flipper-resistor-calculator-private/actions/workflows/build.yml/badge.svg)](https://github.com/shalebridge/flipper-resistor-calculator-private/actions/workflows/build.yml)
+
+
+## Build
 
 These apps are built using [ufbt](https://pypi.org/project/ufbt/) - a subset of the flipper build tool (fbt) targeted at building apps. Install it with:
 
