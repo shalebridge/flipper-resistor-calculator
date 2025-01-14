@@ -1,4 +1,4 @@
-# Resistance calculator
+# Resistor calculator
 
 A simple app to calculate resistance from the coloured bands, based on original work by [Lewis Westbury](https://github.com/instantiator/flipper-zero-experimental-apps/tree/main/resistors). 
 
