@@ -1,4 +1,4 @@
-name: "Build status:"
+name: "Compatibility status:"
 on:
   push:
   pull_request:
