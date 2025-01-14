@@ -8,7 +8,14 @@ on:
 jobs:
   ufbt-build-action:
     runs-on: ubuntu-latest
-    name: 'ufbt: Build for Release branch'
+    strategy:
+      matrix:
+        include:
+          - name: dev channel
+            sdk-channel: dev
+          - name: release channel
+            sdk-channel: release
+    name: 'ufbt: Build for ${{ matrix.name }}'
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -16,8 +23,8 @@ jobs:
         uses: flipperdevices/flipperzero-ufbt-action@v0.1.3
         id: build-app
         with:
-          # Set to 'release' to build for latest published release version
-          sdk-channel: release
+          sdk-channel: ${{ matrix.sdk-channel }}
+          sdk-index-url: ${{ matrix.sdk-index-url }}
       - name: Upload app artifacts
         uses: actions/upload-artifact@v3
         with:
