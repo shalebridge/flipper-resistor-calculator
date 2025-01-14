@@ -9,6 +9,10 @@ A simple app to calculate resistance from the coloured bands, based on original 
 
 ![Screenshot of the resistance calculator in action](screenshots/v0/6-bar.png)
 
+## Build status
+
+[![Build status:](https://github.com/shalebridge/flipper-resistor-calculator-private/actions/workflows/build.yml/badge.svg)](https://github.com/shalebridge/flipper-resistor-calculator-private/actions/workflows/build.yml)
+
 ## Requirements
 
 This app requires the official `release` firmware (tested against version `1.1.2`).
