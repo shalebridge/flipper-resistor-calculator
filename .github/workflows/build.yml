@@ -1,10 +1,7 @@
 name: "Build status:"
 on:
   push:
-    branches: 
-      - master
   pull_request:
-      - master
   schedule: 
     # do a build every day
     - cron: "1 1 * * *"
