@@ -11,9 +11,10 @@ A simple app to calculate resistor values from the coloured bands, based on orig
 
 ## Requirements
 
-This app is tested against the current `dev` and `release` branches of the [OFW](https://github.com/flipperdevices/flipperzero-firmware).
+This app is tested against the current `dev` and `release` branches of the [OFW](https://github.com/flipperdevices/flipperzero-firmware):
 
-[![Compatibility status:](https://github.com/shalebridge/flipper-resistor-calculator/actions/workflows/build.yml/badge.svg)](https://github.com/shalebridge/flipper-resistor-calculator/actions/workflows/build.yml)
+* Release Version: 1.2.0 
+* [![Compatibility status:](https://github.com/shalebridge/flipper-resistor-calculator/actions/workflows/build.yml/badge.svg)](https://github.com/shalebridge/flipper-resistor-calculator/actions/workflows/build.yml)
 
 ## Build
 
