@@ -1,7 +1,7 @@
-name: "Compatibility status:"
+name: "Compatibility status"
 on:
   schedule: 
-    - cron: "0 1 * * *" # Test build at 12:01am daily
+    - cron: "0 0 * * *" # Test build at 12:00am daily
   push:
   pull_request:
   workflow_dispatch:    # Allows manual trigger

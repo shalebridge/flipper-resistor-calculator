@@ -1,4 +1,4 @@
-name: "OFW: v"
+name: "Update Current OFW Version"
 on:
   push:
   release:
@@ -34,7 +34,7 @@ jobs:
     - name: Update README.md
       run: |
         RELEASE_VERSION=${{ steps.get-release.outputs.result }}
-        sed -i "s/Release Version: .*/Release Version: ${RELEASE_VERSION}/" README.md
+        sed -i "s/Current OFW Version: .*/Current OFW Version: ${RELEASE_VERSION}/" README.md
 
     - name: Commit and push changes
       uses: stefanzweifel/git-auto-commit-action@v5
